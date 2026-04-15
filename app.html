@@ -3,230 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אקספרס-בוט | מערכת ביצוע מאובטחת</title>
+    <title>EXPERT-BOT OS | המערכת המרכזית</title>
     <style>
         :root {
-            --bg: #020617;
-            --primary: #3b82f6;
-            --accent: #22d3ee;
-            --glass: rgba(15, 23, 42, 0.95);
+            --bg: #030712;
+            --primary: #2563eb;
+            --accent: #06b6d4;
+            --panel: rgba(17, 24, 39, 0.9);
             --success: #10b981;
+            --error: #ef4444;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--bg);
-            background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
-            color: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: #f3f4f6;
             margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+        }
+
+        .container {
+            width: 95vw;
+            height: 90vh;
+            max-width: 1200px;
+            background: var(--panel);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             overflow: hidden;
         }
 
-        .app-container {
-            width: 95%;
-            max-width: 1000px;
-            height: 90vh;
-            background: var(--glass);
-            backdrop-filter: blur(30px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
-        }
-
-        .chat-header {
+        /* Header Area */
+        .header {
             padding: 20px 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .status-indicator {
+        .status-badge {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.85em;
+            font-size: 0.8em;
+            background: rgba(16, 185, 129, 0.1);
             color: var(--success);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
-
-        .messages {
+        /* Chat Area */
+        .chat-box {
             flex: 1;
-            padding: 25px;
+            padding: 30px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
 
-        .msg {
-            max-width: 85%;
-            padding: 15px 20px;
-            border-radius: 18px;
+        .message {
+            max-width: 80%;
+            padding: 16px 20px;
+            border-radius: 20px;
+            font-size: 1.05rem;
             line-height: 1.6;
-            font-size: 1.05em;
-            animation: fadeIn 0.3s ease;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .bot-msg { 
+            align-self: flex-start; 
+            background: rgba(31, 41, 55, 0.5); 
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
 
-        .bot-msg { align-self: flex-start; background: rgba(30, 41, 59, 0.8); border: 1px solid var(--primary); }
-        .user-msg { align-self: flex-end; background: var(--primary); color: white; }
+        .user-msg { 
+            align-self: flex-end; 
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
 
-        .terminal-box {
+        /* Logic Components */
+        .terminal {
             background: #000;
-            color: #0f0;
-            font-family: 'Courier New', monospace;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 10px;
-            font-size: 0.9em;
-            border: 1px solid #333;
-            white-space: pre-wrap;
-        }
-
-        .payment-card {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid var(--success);
+            color: #10b981;
+            font-family: 'Fira Code', monospace;
             padding: 15px;
             border-radius: 12px;
+            margin: 10px 0;
+            font-size: 0.9em;
+            border-left: 4px solid var(--accent);
+            white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .price-card {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(37, 99, 235, 0.1));
+            border: 1px solid var(--accent);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            background: var(--accent);
+            color: black;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
             margin-top: 10px;
         }
 
+        /* Input Area */
         .input-area {
-            padding: 25px;
-            background: rgba(0,0,0,0.4);
+            padding: 30px;
+            background: rgba(0,0,0,0.2);
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
         input {
             flex: 1;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 12px;
+            padding: 16px 24px;
+            border-radius: 16px;
             color: white;
+            font-size: 1rem;
             outline: none;
+            transition: 0.3s;
         }
 
-        button {
+        input:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); }
+
+        button.send-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 0 30px;
-            border-radius: 12px;
-            font-weight: bold;
+            padding: 0 35px;
+            border-radius: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
         }
 
-        button:hover { background: var(--accent); color: #000; }
-
-        .price-label { color: var(--accent); font-weight: bold; }
+        button.send-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4); }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="chat-header">
-        <strong>אקספרס-בוט | מערכת מאובטחת</strong>
-        <div class="status-indicator"><div class="dot"></div> הגנה פעילה</div>
+<div class="container">
+    <div class="header">
+        <div style="font-weight: 800; font-size: 1.2em; letter-spacing: 1px;">EXPERT-BOT <span style="color: var(--accent);">OS</span></div>
+        <div class="status-badge"><span style="animation: pulse 2s infinite;">●</span> מערכת ביצוע בזמן אמת</div>
     </div>
-    
-    <div class="messages" id="chat">
-        <div class="msg bot-msg">
-            שלום, אני <strong>אקספרס-בוט</strong>. 
-            אני כאן כדי לבצע עבורך פעולות מורכבות במחשב, פיתוח אתרים ותוכנה.
-            <br><br>
-            לפני כל תשלום אבצע סריקה או הדמיה כדי להבטיח תוצאה מדויקת. מה תרצה שאעשה?
+
+    <div class="chat-box" id="chat">
+        <div class="message bot-msg">
+            <strong>מערכת EXPERT-BOT עלתה לאוויר.</strong><br>
+            אני סורק ומבצע פקודות בשלושה מישורים:<br>
+            1. 🛠️ <strong>תחזוקה והפעלה:</strong> אינטרנט, בלוטוס, דרייברים, אופטימיזציה (הכל ב-15 ₪).<br>
+            2. 💻 <strong>פיתוח מתקדם:</strong> בניית אתרים, תוכנות ומערכות (90 ₪).<br>
+            3. ♾️ <strong>מנוי FULL-STACK:</strong> ביצוע ללא הגבלה (150 ₪).<br><br>
+            מה המשימה הראשונה שלי?
         </div>
     </div>
 
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="הקלד פקודה (למשל: סריקה ותיקון)..." autocomplete="off">
-        <button onclick="handleBot()">שלח ביצוע</button>
+        <input type="text" id="userInput" placeholder="הכנס פקודת ביצוע או תיאור תקלה..." autocomplete="off">
+        <button class="send-btn" onclick="processInput()">הרץ ביצוע</button>
     </div>
 </div>
 
 <script>
-    function addMessage(html, type) {
+    // אבטחה: מניעת הזרקת קוד (XSS)
+    function escapeHTML(str) {
+        return str.replace(/[&<>"']/g, function(m) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+        });
+    }
+
+    function addMsg(content, type) {
         const chat = document.getElementById('chat');
         const div = document.createElement('div');
-        div.className = `msg ${type}-msg`;
-        div.innerHTML = html;
+        div.className = `message ${type}-msg`;
+        div.innerHTML = content;
         chat.appendChild(div);
         chat.scrollTop = chat.scrollHeight;
     }
 
-    function handleBot() {
-        const input = document.getElementById('userInput');
-        // הגנה בסיסית מפני הזרקת קוד בקלט
-        const rawQuery = input.value.trim();
-        if(!rawQuery) return;
-
-        addMessage(rawQuery.replace(/</g, "&lt;"), 'user');
-        input.value = "";
-
-        setTimeout(() => {
-            const t = rawQuery.toLowerCase();
-
-            if (t.includes("תקן") || t.includes("סדר") || t.includes("בדיקה") || t.includes("סריקה")) {
-                const logId = "log-" + Date.now();
-                addMessage(`מתחיל בסריקה לאיתור תקלות...<div class="terminal-box" id="${logId}">> Initializing scan...\n> Analyzing system registry...</div>`, 'bot');
-                
-                setTimeout(() => {
-                    const log = document.getElementById(logId);
-                    log.innerHTML += `\n> Found: 3 critical errors.\n> Status: Fixable via remote access.`;
-                    
-                    addMessage(`
-                        <strong>אבחון הושלם:</strong> זיהיתי את התקלות ואני יכול לתקן אותן מיידית.
-                        <br>מחיר תיקון: <span class="price-label">15 ₪</span>
-                        <div class="payment-card">
-                            <strong>להעברה ב-Bit/Paybox:</strong><br>
-                            מספר טלפון: <strong>[הכנס כאן את המספר שלך]</strong><br>
-                            <small>לאחר התשלום רשום "שילמתי" ואבצע את התיקון.</small>
-                        </div>
-                    `, 'bot');
-                }, 2500);
-            }
-            else if (t.includes("בנה") || t.includes("פתח") || t.includes("אתר") || t.includes("תוכנה")) {
-                addMessage(`מתחיל בבניית אפיון טכני עבור: "${rawQuery.replace(/</g, "&lt;")}"...`, 'bot');
-                
-                setTimeout(() => {
-                    addMessage(`
-                        <strong>הדמיית פרויקט מוכנה:</strong><br>
-                        התוכנה תכלול ממשק משתמש (UI), הגנת נתונים וחיבור למסד נתונים.
-                        <br>מחיר פיתוח סופי: <span class="price-label">90 ₪</span>
-                        <div class="payment-card">
-                            <strong>להעברה ב-Bit/Paybox:</strong><br>
-                            מספר טלפון: <strong>[הכנס כאן את המספר שלך]</strong>
-                        </div>
-                    `, 'bot');
-                }, 2000);
-            }
-            else if (t.includes("מחירון")) {
-                addMessage(`מחירון ביצוע:<br>• תיקון: 15₪<br>• פיתוח: 90₪<br>• מנוי הכל כלול: 150₪`, 'bot');
-            }
-            else if (t.includes("שילמתי")) {
-                addMessage("התשלום התקבל. מתחיל בביצוע הפקודה בשטח. נא לא לנתק את החיבור...", 'bot');
-                // כאן יבוא לוג ביצוע סופי
-            }
-            else {
-                addMessage("הבנתי. תן לי פקודה ברורה (כמו 'תקן לי את המחשב' או 'בנה לי אתר') ואבצע סריקה מקדימה.", 'bot');
-            }
-        }, 800);
+    async function runTerminal(task, targetId) {
+        const terminal = document.getElementById(targetId);
+        const steps = [
+            `> Initializing execution core...`,
+            `> Request parsed: [${task}]`,
+            `> Searching for hardware controllers...`,
+            `> Mapping software dependencies...`,
+            `> Integrity check: 100%`,
+            `> PROTOTYPE READY FOR DEPLOYMENT.`
+        ];
+        
+        for(let step of steps) {
+            await new Promise(r => setTimeout(r, 600));
+            terminal.innerHTML += `\n${step}`;
+        }
     }
 
-    document.getElementById('userInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleBot(); });
+    async function processInput() {
+        const input = document.getElementById('userInput');
+        const val = input.value.trim();
+        if(!val) return;
+
+        addMsg(escapeHTML(val), 'user');
+        input.value = "";
+
+        const t = val.toLowerCase();
+        
+        // לוגיקת המחירים והזיהוי
+        const isRepair = t.includes("תקן") || t.includes("סדר") || t.includes("בלוטוס") || t.includes("אינטרנט") || t.includes("איטי") || t.includes("בעיה") || t.includes("הפעל");
+        const isDev = t.includes("בנה") || t.includes("פתח") || t.includes("אתר") || t.includes("תוכנה") || t.includes("קוד");
+        const isSubscription = t.includes("מנוי") || t.includes("הכל");
+
+        setTimeout(async () => {
+            if (isSubscription) {
+                addMsg(`<strong>פרוטוקול מנוי הופעל.</strong><br>גישה מלאה לכל יכולות הביצוע: שירים, סרטונים, פיתוח ותיקונים ללא הגבלה.<br>מחיר: <strong>150 ₪</strong> לחודש.<br><div class="price-card">להפעלת המנוי, העבר ב-Bit: <strong>[המספר שלך]</strong></div>`, 'bot');
+            }
+            else if (isDev) {
+                const termId = "term-" + Date.now();
+                addMsg(`מתחיל באפיון ופיתוח תוכנה עבור: "${escapeHTML(val)}"...<div class="terminal" id="${termId}"></div>`, 'bot');
+                await runTerminal("Development", termId);
+                addMsg(`<strong>אפיון פיתוח הושלם.</strong><br>אני מוכן לבנות את המערכת המדויקת שביקשת.<br>מחיר: <strong>90 ₪</strong>.<br><div class="price-card">להתחלת כתיבת הקוד, העבר ב-Bit: <strong>[המספר שלך]</strong></div>`, 'bot');
+            }
+            else if (isRepair) {
+                const termId = "term-" + Date.now();
+                addMsg(`מתחיל בסריקה ותיקון רב-מערכתי...<div class="terminal" id="${termId}"></div>`, 'bot');
+                await runTerminal("Maintenance", termId);
+                addMsg(`<strong>אבחון ביצוע הושלם:</strong><br>זיהיתי את כל הרכיבים שציינת (אינטרנט, בלוטוס וכו'). אני יכול להפעיל ולסדר את כולם במכה אחת.<br>מחיר כולל: <strong>15 ₪</strong>.<br><div class="price-card">לביצוע התיקון בפועל, העבר ב-Bit: <strong>[המספר שלך]</strong></div>`, 'bot');
+            }
+            else {
+                addMsg("המערכת ממתינה לפקודת ביצוע ספציפית (תיקון/בנייה/מנוי). תאר לי מה המשימה.", 'bot');
+            }
+        }, 500);
+    }
+
+    document.getElementById('userInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') processInput(); });
 </script>
 
 </body>
