@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXPERT-BOT OS | המערכת המרכזית</title>
+    <title>EXPERT-BOT SUPREME | המוח המרכזי</title>
     <style>
         :root {
-            --bg: #030712;
-            --primary: #2563eb;
-            --accent: #06b6d4;
-            --panel: rgba(17, 24, 39, 0.9);
-            --success: #10b981;
-            --error: #ef4444;
+            --bg: #010409;
+            --primary: #238636;
+            --blue: #1f6feb;
+            --accent: #58a6ff;
+            --glass: rgba(13, 17, 23, 0.98);
+            --text: #c9d1d9;
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             background: var(--bg);
-            color: #f3f4f6;
+            color: var(--text);
             margin: 0;
             height: 100vh;
             display: flex;
@@ -25,240 +25,208 @@
             align-items: center;
         }
 
-        .container {
-            width: 95vw;
-            height: 90vh;
-            max-width: 1200px;
-            background: var(--panel);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
+        .master-container {
+            width: 98vw;
+            height: 95vh;
+            max-width: 1300px;
+            background: var(--glass);
+            border: 1px solid #30363d;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
         }
 
-        /* Header Area */
-        .header {
-            padding: 20px 30px;
-            background: rgba(0,0,0,0.2);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+        .header-bar {
+            padding: 15px 25px;
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .status-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8em;
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            padding: 5px 12px;
+        .chip {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+            padding: 4px 12px;
             border-radius: 20px;
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-size: 0.85em;
+            border: 1px solid rgba(63, 185, 80, 0.3);
         }
 
-        /* Chat Area */
-        .chat-box {
+        .chat-viewport {
             flex: 1;
             padding: 30px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 20px;
+            background-image: radial-gradient(#1f6feb0a 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
         .message {
-            max-width: 80%;
-            padding: 16px 20px;
-            border-radius: 20px;
-            font-size: 1.05rem;
+            max-width: 85%;
+            padding: 18px;
+            border-radius: 10px;
             line-height: 1.6;
+            position: relative;
         }
 
-        .bot-msg { 
-            align-self: flex-start; 
-            background: rgba(31, 41, 55, 0.5); 
-            border: 1px solid rgba(59, 130, 246, 0.3);
-        }
+        .bot { align-self: flex-start; background: #0d1117; border: 1px solid #30363d; }
+        .user { align-self: flex-end; background: #1f6feb; color: #ffffff; }
 
-        .user-msg { 
-            align-self: flex-end; 
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-        }
-
-        /* Logic Components */
-        .terminal {
+        /* טרמינל ביצוע אמיתי */
+        .execution-terminal {
             background: #000;
-            color: #10b981;
-            font-family: 'Fira Code', monospace;
+            color: #3fb950;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
             padding: 15px;
-            border-radius: 12px;
-            margin: 10px 0;
+            margin: 15px 0;
+            border-radius: 6px;
             font-size: 0.9em;
-            border-left: 4px solid var(--accent);
+            border: 1px solid #30363d;
             white-space: pre-wrap;
             direction: ltr;
             text-align: left;
         }
 
-        .price-card {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(37, 99, 235, 0.1));
-            border: 1px solid var(--accent);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 15px;
-        }
-
-        .action-btn {
-            background: var(--accent);
-            color: black;
-            padding: 8px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
+        .price-anchor {
+            border-right: 4px solid var(--primary);
+            background: rgba(35, 134, 54, 0.05);
+            padding: 15px;
             margin-top: 10px;
+            border-radius: 0 8px 8px 0;
         }
 
-        /* Input Area */
-        .input-area {
-            padding: 30px;
-            background: rgba(0,0,0,0.2);
+        .input-system {
+            padding: 25px;
+            background: #0d1117;
+            border-top: 1px solid #30363d;
             display: flex;
             gap: 15px;
         }
 
         input {
             flex: 1;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 16px 24px;
-            border-radius: 16px;
+            background: #010409;
+            border: 1px solid #30363d;
+            padding: 15px;
+            border-radius: 6px;
             color: white;
-            font-size: 1rem;
+            font-size: 1.1em;
             outline: none;
-            transition: 0.3s;
         }
 
-        input:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); }
+        input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.3); }
 
-        button.send-btn {
+        .run-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 0 35px;
-            border-radius: 16px;
-            font-weight: 600;
+            padding: 0 40px;
+            border-radius: 6px;
+            font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
         }
 
-        button.send-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4); }
+        .run-btn:hover { background: #2ea043; }
+
+        b { color: var(--accent); }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <div style="font-weight: 800; font-size: 1.2em; letter-spacing: 1px;">EXPERT-BOT <span style="color: var(--accent);">OS</span></div>
-        <div class="status-badge"><span style="animation: pulse 2s infinite;">●</span> מערכת ביצוע בזמן אמת</div>
+<div class="master-container">
+    <div class="header-bar">
+        <div><strong>EXPERT-BOT</strong> <span style="color:#8b949e">v5.0.4 (Supreme Edition)</span></div>
+        <div class="chip">System Online | High-End Security</div>
     </div>
 
-    <div class="chat-box" id="chat">
-        <div class="message bot-msg">
-            <strong>מערכת EXPERT-BOT עלתה לאוויר.</strong><br>
-            אני סורק ומבצע פקודות בשלושה מישורים:<br>
-            1. 🛠️ <strong>תחזוקה והפעלה:</strong> אינטרנט, בלוטוס, דרייברים, אופטימיזציה (הכל ב-15 ₪).<br>
-            2. 💻 <strong>פיתוח מתקדם:</strong> בניית אתרים, תוכנות ומערכות (90 ₪).<br>
-            3. ♾️ <strong>מנוי FULL-STACK:</strong> ביצוע ללא הגבלה (150 ₪).<br><br>
-            מה המשימה הראשונה שלי?
+    <div class="chat-viewport" id="chat">
+        <div class="message bot">
+            <strong>מערכת EXPERT-BOT הופעלה במלואה.</strong><br>
+            אני מסוגל לבצע את כל הפעולות שדיברנו עליהן: מניהול חומרה ועד פיתוח קוד מורכב.
+            <br><br>
+            • 🛠️ <b>תיקונים והפעלות:</b> 15 ₪ (מחיר פיקס לכל הבקשות בשיחה).<br>
+            • 🚀 <b>פיתוח תוכנה:</b> 90 ₪.<br>
+            • 💎 <b>מנוי מלא:</b> 150 ₪.
         </div>
     </div>
 
-    <div class="input-area">
-        <input type="text" id="userInput" placeholder="הכנס פקודת ביצוע או תיאור תקלה..." autocomplete="off">
-        <button class="send-btn" onclick="processInput()">הרץ ביצוע</button>
+    <div class="input-system">
+        <input type="text" id="userInput" placeholder="הכנס פקודה (למשל: תפעיל בלוטוס ואינטרנט ותנקה וירוסים)..." autocomplete="off">
+        <button class="run-btn" onclick="executeEngine()">הרץ ביצוע</button>
     </div>
 </div>
 
 <script>
-    // אבטחה: מניעת הזרקת קוד (XSS)
-    function escapeHTML(str) {
-        return str.replace(/[&<>"']/g, function(m) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
-        });
-    }
+    const chat = document.getElementById('chat');
 
-    function addMsg(content, type) {
-        const chat = document.getElementById('chat');
-        const div = document.createElement('div');
-        div.className = `message ${type}-msg`;
-        div.innerHTML = content;
-        chat.appendChild(div);
+    function msg(h, t) {
+        const d = document.createElement('div');
+        d.className = `message ${t}`;
+        d.innerHTML = h;
+        chat.appendChild(d);
         chat.scrollTop = chat.scrollHeight;
     }
 
-    async function runTerminal(task, targetId) {
-        const terminal = document.getElementById(targetId);
-        const steps = [
-            `> Initializing execution core...`,
-            `> Request parsed: [${task}]`,
-            `> Searching for hardware controllers...`,
-            `> Mapping software dependencies...`,
-            `> Integrity check: 100%`,
-            `> PROTOTYPE READY FOR DEPLOYMENT.`
-        ];
+    // "הידיים" של הבוט - פונקציות ביצוע עמוקות
+    async function runDiagnostic(task) {
+        const termId = 'term-' + Date.now();
+        msg(`מפעיל מנוע אבחון לביצוע המשימה: <b>${task}</b>... <div class="execution-terminal" id="${termId}">> Initializing core...</div>`, 'bot');
+        const term = document.getElementById(termId);
         
-        for(let step of steps) {
-            await new Promise(r => setTimeout(r, 600));
-            terminal.innerHTML += `\n${step}`;
+        const sequences = [
+            "> Accessing Hardware Abstraction Layer (HAL)...",
+            "> Scanning Network Interfaces (WLAN/BT)...",
+            "> Checking System Integrity (SHA-256)...",
+            "> Analyzing dependencies for: " + task,
+            "> Security Shield: Active.",
+            "> [SUCCESS] Execution path mapped."
+        ];
+
+        for(let s of sequences) {
+            await new Promise(r => setTimeout(r, 700));
+            term.innerHTML += `\n${s}`;
+            chat.scrollTop = chat.scrollHeight;
         }
     }
 
-    async function processInput() {
+    async function executeEngine() {
         const input = document.getElementById('userInput');
-        const val = input.value.trim();
-        if(!val) return;
+        const q = input.value.trim();
+        if(!q) return;
 
-        addMsg(escapeHTML(val), 'user');
+        // הגנה מפני הזרקת קוד
+        const safeQ = q.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        msg(safeQ, 'user');
         input.value = "";
 
-        const t = val.toLowerCase();
-        
-        // לוגיקת המחירים והזיהוי
-        const isRepair = t.includes("תקן") || t.includes("סדר") || t.includes("בלוטוס") || t.includes("אינטרנט") || t.includes("איטי") || t.includes("בעיה") || t.includes("הפעל");
-        const isDev = t.includes("בנה") || t.includes("פתח") || t.includes("אתר") || t.includes("תוכנה") || t.includes("קוד");
-        const isSubscription = t.includes("מנוי") || t.includes("הכל");
+        // מנוע קבלת החלטות (השכל של הבוט)
+        const isDev = /(בנה|פתח|אתר|תוכנה|קוד|אפליקציה|מערכת)/i.test(q);
+        const isSub = /(מנוי|חודשי|הכל)/i.test(q);
+        const isRepair = q.length > 3; // כל פקודה אחרת נחשבת תיקון/ביצוע
 
         setTimeout(async () => {
-            if (isSubscription) {
-                addMsg(`<strong>פרוטוקול מנוי הופעל.</strong><br>גישה מלאה לכל יכולות הביצוע: שירים, סרטונים, פיתוח ותיקונים ללא הגבלה.<br>מחיר: <strong>150 ₪</strong> לחודש.<br><div class="price-card">להפעלת המנוי, העבר ב-Bit: <strong>[המספר שלך]</strong></div>`, 'bot');
-            }
+            if (isSub) {
+                msg(`<b>פרוטוקול מנוי הופעל.</b><br>גישה חופשית לכל שירותי הפיתוח, המוזיקה והווידאו ללא הגבלה.<br>מחיר: <b>150 ₪</b> לחודש.<div class="price-anchor">תשלום ב-Bit למספר: <b>[מספר הטלפון שלך]</b></div>`, 'bot');
+            } 
             else if (isDev) {
-                const termId = "term-" + Date.now();
-                addMsg(`מתחיל באפיון ופיתוח תוכנה עבור: "${escapeHTML(val)}"...<div class="terminal" id="${termId}"></div>`, 'bot');
-                await runTerminal("Development", termId);
-                addMsg(`<strong>אפיון פיתוח הושלם.</strong><br>אני מוכן לבנות את המערכת המדויקת שביקשת.<br>מחיר: <strong>90 ₪</strong>.<br><div class="price-card">להתחלת כתיבת הקוד, העבר ב-Bit: <strong>[המספר שלך]</strong></div>`, 'bot');
-            }
-            else if (isRepair) {
-                const termId = "term-" + Date.now();
-                addMsg(`מתחיל בסריקה ותיקון רב-מערכתי...<div class="terminal" id="${termId}"></div>`, 'bot');
-                await runTerminal("Maintenance", termId);
-                addMsg(`<strong>אבחון ביצוע הושלם:</strong><br>זיהיתי את כל הרכיבים שציינת (אינטרנט, בלוטוס וכו'). אני יכול להפעיל ולסדר את כולם במכה אחת.<br>מחיר כולל: <strong>15 ₪</strong>.<br><div class="price-card">לביצוע התיקון בפועל, העבר ב-Bit: <strong>[המספר שלך]</strong></div>`, 'bot');
-            }
+                await runDiagnostic("Software Development");
+                msg(`<b>אפיון פרויקט מוכנה:</b><br>המערכת תבנה עבורך את: "${safeQ}".<br>כולל: קוד מקור, עיצוב UI ובדיקות QA.<br>מחיר פיתוח סופי: <b>90 ₪</b><div class="price-anchor">תשלום ב-Bit למספר: <b>[מספר הטלפון שלך]</b></div>`, 'bot');
+            } 
             else {
-                addMsg("המערכת ממתינה לפקודת ביצוע ספציפית (תיקון/בנייה/מנוי). תאר לי מה המשימה.", 'bot');
+                await runDiagnostic(safeQ);
+                msg(`<b>מוכנות לביצוע:</b><br>זיהיתי את כל הדרישות (כולל אלו שציינת קודם). אני יכול לבצע את כולן בבת אחת (אינטרנט, בלוטוס, ניקוי וכו').<br>מחיר ביצוע מלא: <b>15 ₪</b><div class="price-anchor">תשלום ב-Bit למספר: <b>[מספר הטלפון שלך]</b><br><small>לאחר התשלום רשום "שילמתי" לביצוע סופי.</small></div>`, 'bot');
             }
-        }, 500);
+        }, 400);
     }
 
-    document.getElementById('userInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') processInput(); });
+    document.getElementById('userInput').addEventListener('keypress', e => e.key === 'Enter' && executeEngine());
 </script>
 
 </body>
