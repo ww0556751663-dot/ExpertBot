@@ -15,7 +15,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: var(--bg);
-            background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
             color: #f8fafc;
             margin: 0;
             display: flex;
@@ -24,7 +24,7 @@
             height: 100vh;
         }
 
-        .chat-container {
+        .app-container {
             width: 95%;
             max-width: 900px;
             height: 85vh;
@@ -40,10 +40,10 @@
         .chat-header {
             padding: 20px 30px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0,0,0,0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0,0,0,0.2);
         }
 
         .messages {
@@ -56,10 +56,10 @@
         }
 
         .msg {
-            max-width: 80%;
+            max-width: 85%;
             padding: 15px 20px;
             border-radius: 20px;
-            line-height: 1.5;
+            line-height: 1.6;
             font-size: 1.05em;
         }
 
@@ -105,40 +105,38 @@
 
         button:hover { background: var(--accent); color: black; }
 
-        .pricing-list {
-            margin-top: 10px;
-            border-right: 3px solid var(--accent);
-            padding-right: 15px;
-            font-size: 0.95em;
+        .ai-status {
+            font-size: 0.8em;
+            color: var(--accent);
+            margin-bottom: 5px;
+            display: block;
         }
     </style>
 </head>
 <body>
 
-<div class="chat-container">
+<div class="app-container">
     <div class="chat-header">
-        <strong>אקספרס-בוט: מרכז בקרה וביצוע</strong>
-        <span style="color: var(--accent); font-size: 0.8em;">● מערכת מחוברת</span>
+        <strong>מערכת אקספרס-בוט - AI פעיל</strong>
+        <span style="color: var(--accent); font-size: 0.8em;">● בינה מלאכותית מחוברת</span>
     </div>
     
     <div class="messages" id="chat">
         <div class="msg bot-msg">
-            שלום! אני הבוט המקצוען של אקספרס-בוט. 
+            שלום! שמי <strong>אקספרס-בוט</strong>. השתמשתי בבינה מלאכותית כדי להתחבר למערכות האתר. 
             <br><br>
-            אני כאן כדי לספק <strong>הסבר על האתר</strong>, להציג <strong>מחירון מלא</strong>, לתת <strong>הדגמה בחינם</strong> או לייעץ על מסלול מתאים. 
-            <br><br>
-            <em>שימו לב: פעולות חדירה, פיתוח וביצוע משימות מורכבות פתוחות למנויים בלבד.</em>
+            אני כאן כדי לענות על כל שאלה, להסביר בשפה פשוטה איך הכל עובד, להציג מחירון או לתת הדגמה. מה תרצה לדעת?
         </div>
     </div>
 
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="איך אוכל לעזור לך היום?">
+        <input type="text" id="userInput" placeholder="שאל אותי משהו על האתר או בקש פעולה...">
         <button onclick="runBot()">שלח</button>
     </div>
 </div>
 
 <script>
-    const isSubscribed = false; // מצב מנוי (לשנות ל-true במידה ורכשו)
+    const isSubscribed = false;
 
     function runBot() {
         const input = document.getElementById('userInput');
@@ -151,33 +149,37 @@
 
         setTimeout(() => {
             let reply = "";
+            const t = text.toLowerCase();
 
-            if (text.includes("מחירון") || text.includes("כמה עולה")) {
-                reply = `הנה המחירון של הפעולות באתר:<br>
-                <div class="pricing-list">
-                • הסבר וייעוץ טכני: חינם<br>
-                • הדגמת יכולות חדירה: חינם<br>
-                • מנוי חודשי לביצוע פעולות חופשי: 350₪<br>
-                • פעולה בודדת (חדירה/תיקון): 120₪<br>
-                • פיתוח תוכנה מותאם אישית: החל מ-500₪
-                </div>`;
+            // מנגנון בינה מלאכותית - זיהוי כוונות (Intents)
+            if (t.includes("מחירון") || t.includes("כמה עולה") || t.includes("מחיר")) {
+                reply = "הנה המחירון שלי בשפה פשוטה:<br>• ייעוץ והסברים: חינם<br>• הדגמת יכולות: חינם<br>• פעולה בודדת (חדירה/תיקון): 150₪<br>• מנוי חודשי מלא: 400₪";
             } 
-            else if (text.includes("הסבר") || text.includes("מה האתר")) {
-                reply = "אקספרס-בוט היא פלטפורמה המאפשרת ביצוע פעולות אוטומטיות מורכבות במחשבים ובשרתים. אני הבוט המנהל את הממשק ומבצע את הפקודות שלך בשטח.";
+            else if (t.includes("הסבר") || t.includes("מה זה") || t.includes("איך זה עובד") || t.includes("מי אתה")) {
+                reply = `
+                    <span class="ai-status">מעבד הסבר בבינה מלאכותית...</span>
+                    אני העוזר הדיגיטלי שלך. דמיין אותי כרובוט שחוסך לך זמן: <br>
+                    1. אני מלמד את המחשב לבצע משימות במקומך (אוטומציה). <br>
+                    2. אני עוזר לך לפתור תקלות במחשבים אחרים מרחוק. <br>
+                    3. אני בונה "ספרי הוראות" חכמים למחשב כדי שיעבוד בשבילך.
+                `;
             }
-            else if (text.includes("הדגמה")) {
-                reply = "מפעיל הדגמה בחינם... <br> [STATUS]: מזהה מערכת יעד... <br> [ACTION]: עוקף הגנות בדיקה... <br> <strong>הצלחה:</strong> הצלחתי לחדור למערכת הסימולציה. בגרסת המנוי אוכל לבצע זאת על כל מטרה שתגדיר.";
+            else if (t.includes("הדגמה") || t.includes("תראה לי")) {
+                reply = "<span class='ai-status'>מפעיל סימולציה חכמה...</span> מזהה שרת מטרה... מתחבר... עוקף הגנות... הצלחתי! כך זה נראה כשאני מבצע פעולה עבורך.";
             }
-            else if (!isSubscribed && (text.includes("תבצע") || text.includes("תחדור") || text.includes("תפרוץ"))) {
-                reply = "זיהיתי בקשת ביצוע פעולה. מכיוון שאין לך מנוי פעיל, אני רשאי לעזור רק בנושאים טכניים, ייעוץ והסברים. אנא בחר מסלול מהמחירון כדי להמשיך.";
+            else if (t.includes("תודה") || t.includes("שלום")) {
+                reply = "בשמחה! אני כאן לכל שאלה על השירותים שלנו.";
+            }
+            else if (!isSubscribed && (t.includes("תבצע") || t.includes("תחדור") || t.includes("תעשה"))) {
+                reply = "אני מזהה שאתה רוצה לעבור לביצוע פעולה. מכיוון שאין מנוי, הבינה המלאכותית שלי מוגבלת כרגע רק למתן תשובות, הסברים וייעוץ על מסלולים.";
             }
             else {
-                reply = "אני מבין. האם תרצה שאסביר יותר על האתר, אציג את המחירון או אתן לך הדגמה של היכולות שלי?";
+                reply = "<span class='ai-status'>ניתוח שאלה...</span> זו שאלה מעניינת על האתר. בקצרה: אקספרס-בוט נועד להפוך פעולות מחשב מסובכות לקלות ומהירות. תרצה שאפרט על המחירון או על סוגי הפעולות שאני עושה?";
             }
 
             chat.innerHTML += `<div class="msg bot-msg">${reply}</div>`;
             chat.scrollTop = chat.scrollHeight;
-        }, 1000);
+        }, 1200);
     }
 </script>
 
