@@ -3,76 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מומחה בוט - פתרונות טכנולוגיים מתקדמים</title>
+    <title>אקספרט-בוט | פתרונות תוכנה חכמים</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
+            --primary-color: #1a2a6c;
             --accent-color: #27ae60;
-            --bg-color: #f8f9fa;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: var(--bg-color); 
-            color: #333; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: var(--bg-gradient); 
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
         }
-        .container { 
-            max-width: 700px; 
-            width: 90%;
+        .card { 
+            max-width: 650px; 
             background: white; 
-            padding: 40px; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--accent-color);
+            padding: 50px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
         }
-        h1 { color: var(--primary-color); font-size: 2.5em; margin-bottom: 20px; }
-        .feature-box {
-            background: #e8f5e9;
-            padding: 20px;
-            border-right: 5px solid var(--accent-color);
-            margin: 25px 0;
-            text-align: right;
+        h1 { color: var(--primary-color); font-size: 3em; margin-bottom: 10px; }
+        .subtitle { color: var(--accent-color); font-size: 1.5em; font-weight: bold; margin-bottom: 30px; }
+        .description { font-size: 1.2em; line-height: 1.6; color: #444; margin-bottom: 30px; }
+        .feature {
+            background: #f0f4f8;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-weight: 500;
         }
-        p { font-size: 1.1em; line-height: 1.8; }
-        .highlight { color: var(--accent-color); font-weight: bold; }
-        .button { 
+        .btn { 
             display: inline-block; 
-            padding: 18px 40px; 
-            background-color: var(--accent-color); 
+            padding: 15px 35px; 
+            background: var(--accent-color); 
             color: white; 
             text-decoration: none; 
-            border-radius: 50px; 
-            font-weight: bold; 
-            font-size: 1.2em;
-            transition: transform 0.2s, background-color 0.2s;
-            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            border-radius: 30px; 
+            font-weight: bold;
+            transition: 0.3s;
         }
-        .button:hover { background-color: #219150; transform: translateY(-2px); }
-        .footer-note { font-size: 0.9em; color: #7f8c8d; margin-top: 30px; }
+        .btn:hover { background: #219150; transform: scale(1.05); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>מומחה בוט</h1>
-        <p>למה לבזבז זמן וכסף על טכנאי כשאפשר לקבל פתרון חכם, מהיר ובטוח מרחוק?</p>
+    <div class="card">
+        <h1>אקספרט-בוט</h1>
+        <div class="subtitle">פתרונות תוכנה חכמים</div>
         
-        <div class="feature-box">
-            <strong>השירות הבלעדי שלנו:</strong><br>
-            במקום להסביר לכם מה לעשות, המערכת שלנו מתחברת למחשב שלכם ופותרת את התקלה בעצמה. 
-            <br><span class="highlight">הכל בשקיפות מלאה: שום פעולה לא תתבצע ללא אישור מפורש מכם מראש!</span>
-        </div>
+        <p class="description">
+            למה לבקש מתכנאי לפתור לכם בעיות אם אני נכנס לכם למחשב ופותר את הבעיות לבד? 
+            אנחנו משנים את הדרך שבה אתם מקבלים שירות טכני - בביטחון מלא ובאישורכם מראש לפני כל פעולה.
+        </p>
 
-        <p>✓ פיתוח תוכנה ואתרים בהתאמה אישית<br>
-        ✓ תמיכה טכנית אוטומטית ללא צורך בידע מקדים<br>
-        ✓ אבטחת מידע ברמה הגבוהה ביותר</p>
+        <div class="feature">✓ פתרון תקלות מרחוק באופן אוטומטי</div>
+        <div class="feature">✓ אישור מראש לפני כל פעולה במחשב</div>
+        <div class="feature">✓ אבטחה מקסימלית ושקיפות מלאה</div>
 
-        <a href="#" class="button">התחילו עכשיו בחינם</a>
-        
-        <p class="footer-note">מערכת בינה מלאכותית בשירות הלקוח</p>
+        <br>
+        <a href="#" class="btn">צרו קשר לפרטים נוספים</a>
     </div>
 </body>
 </html>
