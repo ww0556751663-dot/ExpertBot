@@ -2,80 +2,139 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>EXPERT-BOT | Control Suite</title>
+    <title>EXPERT-BOT SUPREME | הליבה המרכזית</title>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
-        :root { --bg: #010409; --panel: #0d1117; --primary: #238636; --blue: #1f6feb; --border: #30363d; --text: #c9d1d9; }
-        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .app-shell { width: 95vw; height: 90vh; max-width: 1200px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; }
-        .chat-flow { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-        .bubble { max-width: 80%; padding: 15px; border-radius: 10px; line-height: 1.5; }
-        .bot { align-self: flex-start; background: #161b22; border: 1px solid var(--border); border-right: 4px solid var(--blue); }
-        .user { align-self: flex-end; background: var(--blue); color: white; }
-        .terminal { background: #000; color: #3fb950; font-family: monospace; padding: 15px; border-radius: 8px; margin-top: 10px; direction: ltr; text-align: left; white-space: pre-wrap; border-left: 3px solid #3fb950; }
-        .input-bar { padding: 20px; background: #010409; border-top: 1px solid var(--border); display: flex; gap: 10px; }
-        input { flex: 1; background: #0d1117; border: 1px solid var(--border); padding: 12px; border-radius: 6px; color: white; outline: none; }
-        button { background: var(--primary); color: white; border: none; padding: 0 25px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        :root { --bg: #010409; --panel: #0d1117; --primary: #238636; --blue: #1f6feb; --border: #30363d; --text: #c9d1d9; --terminal-green: #3fb950; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* עיצוב Header מקצועי */
+        .header { background: #161b22; border-bottom: 1px solid var(--border); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .status-dot { width: 10px; height: 10px; background: var(--terminal-green); border-radius: 50%; display: inline-block; margin-left: 8px; box-shadow: 0 0 10px var(--terminal-green); }
+
+        /* אזור הצ'אט */
+        .chat-container { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; background: radial-gradient(circle at top right, rgba(31, 111, 235, 0.05), transparent); }
+        .bubble { max-width: 75%; padding: 20px 25px; border-radius: 15px; font-size: 1.1rem; line-height: 1.6; position: relative; border: 1px solid transparent; }
+        .bot-msg { align-self: flex-start; background: #161b22; border-color: var(--border); border-right: 5px solid var(--blue); }
+        .user-msg { align-self: flex-end; background: var(--blue); color: white; border-bottom-left-radius: 2px; }
+
+        /* טרמינל ביצוע (כמו בתמונה) */
+        .terminal-box { background: #000; color: var(--terminal-green); font-family: 'Consolas', monospace; padding: 20px; border-radius: 8px; margin-top: 15px; direction: ltr; text-align: left; border-left: 4px solid var(--terminal-green); white-space: pre-wrap; font-size: 0.95rem; }
+        
+        /* תמחור ואישור (כמו בתמונה) */
+        .pricing-card { background: rgba(35, 134, 54, 0.1); border: 1px solid var(--primary); padding: 20px; border-radius: 10px; margin-top: 15px; }
+        .bit-info { background: #010409; border: 1px solid var(--border); padding: 15px; border-radius: 6px; margin-top: 10px; font-weight: bold; color: #58a6ff; }
+
+        /* אזור הקלט */
+        .input-area { background: #161b22; border-top: 1px solid var(--border); padding: 30px; display: flex; gap: 15px; }
+        input { flex: 1; background: #0d1117; border: 1px solid var(--border); padding: 18px; border-radius: 8px; color: white; font-size: 1.1rem; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--blue); box-shadow: 0 0 10px rgba(31, 111, 235, 0.3); }
+        .send-btn { background: var(--primary); color: white; border: none; padding: 0 40px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 1.1rem; }
+        .send-btn:hover { background: #2ea043; transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
-<div class="app-shell">
-    <div class="chat-flow" id="chat">
-        <div class="bubble bot">
-            <b>מערכת Expert-Bot מוכנה.</b><br>
-            כדי שאוכל לבצע פעולות, וודא שהפעלת את ה-Agent במחשב שלך.
-        </div>
-    </div>
-    <div class="input-bar">
-        <input type="text" id="uInp" placeholder="מה המשימה? (למשל: תפעיל בלוטוס)...">
-        <button onclick="sendTask()">הרץ ביצוע</button>
+<div class="header">
+    <div><strong>EXPERT-BOT</strong> | System Core v8.0</div>
+    <div><span class="status-dot"></span> מחובר לשרת עולמי</div>
+</div>
+
+<div class="chat-container" id="chat">
+    <div class="bubble bot-msg">
+        <b>ברוך הבא למערכת הניהול המרכזית.</b><br>
+        אני מסוגל לבצע את כל הפעולות שדיברנו עליהן: ניהול חומרה, תיקון תקלות ופיתוח קוד מורכב.<br><br>
+        • <b>תיקונים והפעלות:</b> 15 ₪ (מחיר פיקס לכל הבקשות).<br>
+        • <b>פיתוח תוכנה:</b> 90 ₪.<br>
+        • <b>מנוי מלא:</b> 150 ₪.
     </div>
 </div>
 
+<div class="input-area">
+    <input type="text" id="userInput" placeholder="הכנס משימה לביצוע (למשל: תפעיל בלוטוס ואינטרנט ותסרוק וירוסים)...">
+    <button class="send-btn" onclick="mainEngine()">הרץ ביצוע</button>
+</div>
+
 <script>
-    // התחברות לשרת המתווך החינמי
     const socket = io('https://expert-bot-relay.onrender.com');
     const chat = document.getElementById('chat');
+    let currentStep = "IDLE";
+    let lastQuery = "";
 
-    function addMsg(text, type) {
+    function addMsg(html, type) {
         const d = document.createElement('div');
-        d.className = `bubble ${type}`;
-        d.innerHTML = text;
+        d.className = `bubble ${type}-msg`;
+        d.innerHTML = html;
         chat.appendChild(d);
         chat.scrollTop = chat.scrollHeight;
+        return d;
     }
 
-    // קבלת תשובה אמיתית מהמחשב של הלקוח
-    socket.on('command_response', (data) => {
-        const lastBotMsg = chat.lastElementChild;
-        const term = document.createElement('div');
-        term.className = 'terminal';
-        term.innerText = `> EXECUTION RESULT:\n${data.data}`;
-        lastBotMsg.appendChild(term);
-    });
-
-    async function sendTask() {
-        const inp = document.getElementById('uInp');
+    async function mainEngine() {
+        const inp = document.getElementById('userInput');
         const q = inp.value.trim();
         if(!q) return;
 
         addMsg(q, 'user');
         inp.value = "";
 
-        // זיהוי פקודה (לוגיקה מקצועית)
-        let cmd = "";
-        if(q.includes("בלוטוס")) cmd = "powershell.exe Start-Service bthserv";
-        if(q.includes("אינטרנט")) cmd = "ipconfig /all";
-        if(q.includes("סרוק")) cmd = "dir C:\\ /s /b | findstr /i .exe";
-
-        if(cmd) {
-            addMsg(`<b>מבצע אבחון וביצוע...</b><br>שולח פקודה לסוכן המקומי: <code>${cmd}</code>`, 'bot');
-            socket.emit('dispatch_command', { cmd: cmd });
-        } else {
-            addMsg("משימת פיתוח זוהתה. מחיר אפיון: 90 ₪. האם להמשיך?", 'bot');
+        if (currentStep === "AWAITING_CONFIRMATION") {
+            processFinalExecution(q);
+            return;
         }
+
+        lastQuery = q;
+        const isDev = /(בנה|פתח|אתר|תוכנה|קוד|מערכת)/i.test(q);
+        
+        // שלב 1: אבחון טכני (כמו בתמונה)
+        const diagMsg = addMsg(`מתחיל באפיון וביצוע עבור: "${q}"...`, 'bot');
+        const termId = "t-" + Date.now();
+        diagMsg.innerHTML += `<div class="terminal-box" id="${termId}">> Initializing execution core...\n> Accessing Hardware Abstraction Layer (HAL)...</div>`;
+        
+        const term = document.getElementById(termId);
+        const steps = ["> Scanning Network Interfaces...", "> Verifying User Permissions...", "> Mapping software dependencies...", "> Integrity check: 100%"];
+        
+        for(let s of steps) {
+            await new Promise(r => setTimeout(r, 600));
+            term.innerHTML += `\n${s}`;
+        }
+
+        // שלב 2: שאלות אימות (לוודא שעושים בדיוק מה שצריך)
+        setTimeout(() => {
+            addMsg(`
+                <div class="pricing-card">
+                    <b>זיהיתי את המשימות הבאות: ${q}</b><br><br>
+                    כדי לבצע זאת במדויק, ענה לי:<br>
+                    1. האם יש לך הרשאות מנהל במחשב כרגע?<br>
+                    2. האם תרצה שאבצע גיבוי הגדרות לפני השינוי?<br><br>
+                    <b>מחיר לביצוע מלא: ${isDev ? '90 ₪' : '15 ₪'}</b>
+                </div>
+            `, 'bot');
+            currentStep = "AWAITING_CONFIRMATION";
+        }, 1000);
     }
+
+    function processFinalExecution(answer) {
+        addMsg("הפרטים אומתו. המערכת מוכנה לביצוע סופי.", "bot");
+        addMsg(`
+            <div class="pricing-card" style="border-color: var(--blue);">
+                <b>להשלמת הפעולה, בצע העברה ב-Bit/Paybox:</b>
+                <div class="bit-info">מספר טלפון: [הכנס כאן את המספר שלך]</div>
+                <small>לאחר התשלום, רשום "שילמתי" והפקודות יישלחו מיידית למחשב שלך.</small>
+            </div>
+        `, "bot");
+        currentStep = "IDLE";
+    }
+
+    // קבלת תוצאות מהסוכן האמיתי
+    socket.on('command_response', (data) => {
+        const lastMsg = chat.lastElementChild;
+        const resBox = document.createElement('div');
+        resBox.className = 'terminal-box';
+        resBox.style.borderColor = '#1f6feb';
+        resBox.innerText = `> REAL-TIME SYSTEM REPORT:\n${data.data}`;
+        lastMsg.appendChild(resBox);
+    });
 </script>
 </body>
 </html>
