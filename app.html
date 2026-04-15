@@ -1,233 +1,30 @@
-<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXPERT-BOT SUPREME | המוח המרכזי</title>
-    <style>
-        :root {
-            --bg: #010409;
-            --primary: #238636;
-            --blue: #1f6feb;
-            --accent: #58a6ff;
-            --glass: rgba(13, 17, 23, 0.98);
-            --text: #c9d1d9;
-        }
+// המפתח שהוצאת מהמסך בתמונה (הקוד הארוך)
+const GEMINI_API_KEY = "הכנס_כאן_את_המפתח_המלא_שלך"; 
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+async function processWithAI(userText) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    
+    const prompt = `אתה מומחה טכני. המשתמש ביקש: "${userText}".
+    1. אם זה תיקון חומרה/רשת (15 ש"ח): החזר פקודת Windows PowerShell מתאימה בתוך תג <cmd>.
+    2. אם זה פיתוח תוכנה (90 ש"ח): החזר 3 שאלות אימות מקצועיות.
+    3. אם זה סתם דיבור: ענה בקיצור.
+    ענה בעברית.`;
 
-        .master-container {
-            width: 98vw;
-            height: 95vh;
-            max-width: 1300px;
-            background: var(--glass);
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 0 40px rgba(0,0,0,0.9);
-        }
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    });
 
-        .header-bar {
-            padding: 15px 25px;
-            background: #161b22;
-            border-bottom: 1px solid #30363d;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    const data = await response.json();
+    const botReply = data.candidates[0].content.parts[0].text;
 
-        .chip {
-            background: rgba(35, 134, 54, 0.15);
-            color: #3fb950;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            border: 1px solid rgba(63, 185, 80, 0.3);
-        }
-
-        .chat-viewport {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            background-image: radial-gradient(#1f6feb0a 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-
-        .message {
-            max-width: 85%;
-            padding: 18px;
-            border-radius: 10px;
-            line-height: 1.6;
-            position: relative;
-        }
-
-        .bot { align-self: flex-start; background: #0d1117; border: 1px solid #30363d; }
-        .user { align-self: flex-end; background: #1f6feb; color: #ffffff; }
-
-        /* טרמינל ביצוע אמיתי */
-        .execution-terminal {
-            background: #000;
-            color: #3fb950;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 6px;
-            font-size: 0.9em;
-            border: 1px solid #30363d;
-            white-space: pre-wrap;
-            direction: ltr;
-            text-align: left;
-        }
-
-        .price-anchor {
-            border-right: 4px solid var(--primary);
-            background: rgba(35, 134, 54, 0.05);
-            padding: 15px;
-            margin-top: 10px;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .input-system {
-            padding: 25px;
-            background: #0d1117;
-            border-top: 1px solid #30363d;
-            display: flex;
-            gap: 15px;
-        }
-
-        input {
-            flex: 1;
-            background: #010409;
-            border: 1px solid #30363d;
-            padding: 15px;
-            border-radius: 6px;
-            color: white;
-            font-size: 1.1em;
-            outline: none;
-        }
-
-        input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.3); }
-
-        .run-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0 40px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .run-btn:hover { background: #2ea043; }
-
-        b { color: var(--accent); }
-    </style>
-</head>
-<body>
-
-<div class="master-container">
-    <div class="header-bar">
-        <div><strong>EXPERT-BOT</strong> <span style="color:#8b949e">v5.0.4 (Supreme Edition)</span></div>
-        <div class="chip">System Online | High-End Security</div>
-    </div>
-
-    <div class="chat-viewport" id="chat">
-        <div class="message bot">
-            <strong>מערכת EXPERT-BOT הופעלה במלואה.</strong><br>
-            אני מסוגל לבצע את כל הפעולות שדיברנו עליהן: מניהול חומרה ועד פיתוח קוד מורכב.
-            <br><br>
-            • 🛠️ <b>תיקונים והפעלות:</b> 15 ₪ (מחיר פיקס לכל הבקשות בשיחה).<br>
-            • 🚀 <b>פיתוח תוכנה:</b> 90 ₪.<br>
-            • 💎 <b>מנוי מלא:</b> 150 ₪.
-        </div>
-    </div>
-
-    <div class="input-system">
-        <input type="text" id="userInput" placeholder="הכנס פקודה (למשל: תפעיל בלוטוס ואינטרנט ותנקה וירוסים)..." autocomplete="off">
-        <button class="run-btn" onclick="executeEngine()">הרץ ביצוע</button>
-    </div>
-</div>
-
-<script>
-    const chat = document.getElementById('chat');
-
-    function msg(h, t) {
-        const d = document.createElement('div');
-        d.className = `message ${t}`;
-        d.innerHTML = h;
-        chat.appendChild(d);
-        chat.scrollTop = chat.scrollHeight;
+    // בדיקה האם ה-AI החליט להריץ פקודה
+    if (botReply.includes("<cmd>")) {
+        const command = botReply.match(/<cmd>(.*?)<\/cmd>/)[1];
+        addMsg("<b>אבחון הסתיים. מריץ פקודת מערכת...</b>", "bot");
+        socket.emit('execute_ai_cmd', { cmd: command });
+    } else {
+        addMsg(botReply, "bot");
     }
-
-    // "הידיים" של הבוט - פונקציות ביצוע עמוקות
-    async function runDiagnostic(task) {
-        const termId = 'term-' + Date.now();
-        msg(`מפעיל מנוע אבחון לביצוע המשימה: <b>${task}</b>... <div class="execution-terminal" id="${termId}">> Initializing core...</div>`, 'bot');
-        const term = document.getElementById(termId);
-        
-        const sequences = [
-            "> Accessing Hardware Abstraction Layer (HAL)...",
-            "> Scanning Network Interfaces (WLAN/BT)...",
-            "> Checking System Integrity (SHA-256)...",
-            "> Analyzing dependencies for: " + task,
-            "> Security Shield: Active.",
-            "> [SUCCESS] Execution path mapped."
-        ];
-
-        for(let s of sequences) {
-            await new Promise(r => setTimeout(r, 700));
-            term.innerHTML += `\n${s}`;
-            chat.scrollTop = chat.scrollHeight;
-        }
-    }
-
-    async function executeEngine() {
-        const input = document.getElementById('userInput');
-        const q = input.value.trim();
-        if(!q) return;
-
-        // הגנה מפני הזרקת קוד
-        const safeQ = q.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        msg(safeQ, 'user');
-        input.value = "";
-
-        // מנוע קבלת החלטות (השכל של הבוט)
-        const isDev = /(בנה|פתח|אתר|תוכנה|קוד|אפליקציה|מערכת)/i.test(q);
-        const isSub = /(מנוי|חודשי|הכל)/i.test(q);
-        const isRepair = q.length > 3; // כל פקודה אחרת נחשבת תיקון/ביצוע
-
-        setTimeout(async () => {
-            if (isSub) {
-                msg(`<b>פרוטוקול מנוי הופעל.</b><br>גישה חופשית לכל שירותי הפיתוח, המוזיקה והווידאו ללא הגבלה.<br>מחיר: <b>150 ₪</b> לחודש.<div class="price-anchor">תשלום ב-Bit למספר: <b>[מספר הטלפון שלך]</b></div>`, 'bot');
-            } 
-            else if (isDev) {
-                await runDiagnostic("Software Development");
-                msg(`<b>אפיון פרויקט מוכנה:</b><br>המערכת תבנה עבורך את: "${safeQ}".<br>כולל: קוד מקור, עיצוב UI ובדיקות QA.<br>מחיר פיתוח סופי: <b>90 ₪</b><div class="price-anchor">תשלום ב-Bit למספר: <b>[מספר הטלפון שלך]</b></div>`, 'bot');
-            } 
-            else {
-                await runDiagnostic(safeQ);
-                msg(`<b>מוכנות לביצוע:</b><br>זיהיתי את כל הדרישות (כולל אלו שציינת קודם). אני יכול לבצע את כולן בבת אחת (אינטרנט, בלוטוס, ניקוי וכו').<br>מחיר ביצוע מלא: <b>15 ₪</b><div class="price-anchor">תשלום ב-Bit למספר: <b>[מספר הטלפון שלך]</b><br><small>לאחר התשלום רשום "שילמתי" לביצוע סופי.</small></div>`, 'bot');
-            }
-        }, 400);
-    }
-
-    document.getElementById('userInput').addEventListener('keypress', e => e.key === 'Enter' && executeEngine());
-</script>
-
-</body>
-</html>
+}
