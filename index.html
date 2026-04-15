@@ -2,159 +2,80 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אקספרס-בוט | חזון טכנולוגי פורץ דרך</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <title>EXPERT-BOT | Control Suite</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
-        :root {
-            --bg: #030712;
-            --primary: #3b82f6;
-            --accent: #22d3ee;
-            --card-border: rgba(255, 255, 255, 0.08);
-            --card-bg: rgba(15, 23, 42, 0.6);
-        }
-
-        body {
-            font-family: 'Assistant', sans-serif;
-            background-color: var(--bg);
-            background-image: 
-                radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.1) 0%, transparent 30%),
-                radial-gradient(circle at 90% 90%, rgba(34, 211, 238, 0.1) 0%, transparent 30%);
-            color: #f8fafc;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .main-container {
-            max-width: 1000px;
-            width: 100%;
-            background: var(--card-bg);
-            backdrop-filter: blur(30px);
-            padding: 80px 40px;
-            border-radius: 50px;
-            border: 1px solid var(--card-border);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 5em;
-            margin: 0;
-            font-weight: 800;
-            background: linear-gradient(to bottom, #fff 40%, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -2px;
-        }
-
-        .highlight-text {
-            font-size: 2em;
-            font-weight: 700;
-            color: var(--accent);
-            margin: 25px 0 50px;
-            display: block;
-            text-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
-        }
-
-        .features-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 60px;
-        }
-
-        .feature-item {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 30px;
-            border-radius: 25px;
-            border: 1px solid var(--card-border);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            flex: 1 1 calc(33% - 50px);
-            min-width: 250px;
-            text-align: center;
-        }
-
-        /* משבצת הבינה המלאכותית מקבלת דגש במרכז */
-        .feature-item.ai-center {
-            flex: 1 1 100%; /* תופסת שורה שלמה או בולטת במרכז */
-            max-width: 500px;
-            border-color: var(--primary);
-            background: rgba(59, 130, 246, 0.05);
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);
-        }
-
-        .feature-item:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--accent);
-        }
-
-        .feature-item strong {
-            display: block;
-            font-size: 1.4em;
-            color: #fff;
-            margin-bottom: 12px;
-        }
-
-        .feature-item p {
-            color: #94a3b8;
-            line-height: 1.6;
-            margin: 0;
-            font-size: 1.1em;
-        }
-
-        .action-button {
-            background: #fff;
-            color: #000;
-            padding: 22px 70px;
-            border-radius: 100px;
-            text-decoration: none;
-            font-size: 1.4em;
-            font-weight: 800;
-            transition: 0.3s;
-            display: inline-block;
-        }
-
-        .action-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
-            background: var(--accent);
-        }
+        :root { --bg: #010409; --panel: #0d1117; --primary: #238636; --blue: #1f6feb; --border: #30363d; --text: #c9d1d9; }
+        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .app-shell { width: 95vw; height: 90vh; max-width: 1200px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; }
+        .chat-flow { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .bubble { max-width: 80%; padding: 15px; border-radius: 10px; line-height: 1.5; }
+        .bot { align-self: flex-start; background: #161b22; border: 1px solid var(--border); border-right: 4px solid var(--blue); }
+        .user { align-self: flex-end; background: var(--blue); color: white; }
+        .terminal { background: #000; color: #3fb950; font-family: monospace; padding: 15px; border-radius: 8px; margin-top: 10px; direction: ltr; text-align: left; white-space: pre-wrap; border-left: 3px solid #3fb950; }
+        .input-bar { padding: 20px; background: #010409; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        input { flex: 1; background: #0d1117; border: 1px solid var(--border); padding: 12px; border-radius: 6px; color: white; outline: none; }
+        button { background: var(--primary); color: white; border: none; padding: 0 25px; border-radius: 6px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <h1>אקספרס-בוט</h1>
-        <span class="highlight-text">האתר שיבצע לך את כל הפעולות שאתה רק חולם עליהם</span>
-        
-        <div class="features-grid">
-            <div class="feature-item">
-                <strong>בניית אתרים</strong>
-                <p>עיצוב מרהיב ופיתוח אתרי תדמית וחנויות ברמה הגבוהה ביותר.</p>
-            </div>
 
-            <div class="feature-item ai-center">
-                <strong>בינה מלאכותית (AI)</strong>
-                <p>הטמעת מודלים חכמים לניהול אוטומטי, ניתוח נתונים ופתרונות עתידניים.</p>
-            </div>
-
-            <div class="feature-item">
-                <strong>פיתוח תוכנה</strong>
-                <p>כלים טכנולוגיים מותאמים אישית לשיפור היעילות העסקית שלכם.</p>
-            </div>
-
-            <div class="feature-item">
-                <strong>אוטומציה מלאה</strong>
-                <p>תיקון תקלות ותמיכה טכנית מרחוק ללא מגע יד אדם.</p>
-            </div>
+<div class="app-shell">
+    <div class="chat-flow" id="chat">
+        <div class="bubble bot">
+            <b>מערכת Expert-Bot מוכנה.</b><br>
+            כדי שאוכל לבצע פעולות, וודא שהפעלת את ה-Agent במחשב שלך.
         </div>
-
-        <a href="app.html" class="primary-button">בואו נגשים חלום</a>
     </div>
+    <div class="input-bar">
+        <input type="text" id="uInp" placeholder="מה המשימה? (למשל: תפעיל בלוטוס)...">
+        <button onclick="sendTask()">הרץ ביצוע</button>
+    </div>
+</div>
+
+<script>
+    // התחברות לשרת המתווך החינמי
+    const socket = io('https://expert-bot-relay.onrender.com');
+    const chat = document.getElementById('chat');
+
+    function addMsg(text, type) {
+        const d = document.createElement('div');
+        d.className = `bubble ${type}`;
+        d.innerHTML = text;
+        chat.appendChild(d);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    // קבלת תשובה אמיתית מהמחשב של הלקוח
+    socket.on('command_response', (data) => {
+        const lastBotMsg = chat.lastElementChild;
+        const term = document.createElement('div');
+        term.className = 'terminal';
+        term.innerText = `> EXECUTION RESULT:\n${data.data}`;
+        lastBotMsg.appendChild(term);
+    });
+
+    async function sendTask() {
+        const inp = document.getElementById('uInp');
+        const q = inp.value.trim();
+        if(!q) return;
+
+        addMsg(q, 'user');
+        inp.value = "";
+
+        // זיהוי פקודה (לוגיקה מקצועית)
+        let cmd = "";
+        if(q.includes("בלוטוס")) cmd = "powershell.exe Start-Service bthserv";
+        if(q.includes("אינטרנט")) cmd = "ipconfig /all";
+        if(q.includes("סרוק")) cmd = "dir C:\\ /s /b | findstr /i .exe";
+
+        if(cmd) {
+            addMsg(`<b>מבצע אבחון וביצוע...</b><br>שולח פקודה לסוכן המקומי: <code>${cmd}</code>`, 'bot');
+            socket.emit('dispatch_command', { cmd: cmd });
+        } else {
+            addMsg("משימת פיתוח זוהתה. מחיר אפיון: 90 ₪. האם להמשיך?", 'bot');
+        }
+    }
+</script>
 </body>
 </html>
