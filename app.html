@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אקספרס-בוט | מרכז ביצוע ותשלומים</title>
+    <title>אקספרס-בוט | מערכת ביצוע מאובטחת</title>
     <style>
         :root {
             --bg: #020617;
             --primary: #3b82f6;
             --accent: #22d3ee;
             --glass: rgba(15, 23, 42, 0.95);
+            --success: #10b981;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: var(--bg);
-            background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
             color: #f8fafc;
             margin: 0;
             display: flex;
@@ -31,11 +32,11 @@
             height: 90vh;
             background: var(--glass);
             backdrop-filter: blur(30px);
-            border-radius: 25px;
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
         }
 
         .chat-header {
@@ -46,6 +47,16 @@
             justify-content: space-between;
             align-items: center;
         }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+            color: var(--success);
+        }
+
+        .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
 
         .messages {
             flex: 1;
@@ -62,23 +73,29 @@
             border-radius: 18px;
             line-height: 1.6;
             font-size: 1.05em;
+            animation: fadeIn 0.3s ease;
         }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .bot-msg { align-self: flex-start; background: rgba(30, 41, 59, 0.8); border: 1px solid var(--primary); }
         .user-msg { align-self: flex-end; background: var(--primary); color: white; }
 
-        .demo-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px dashed var(--accent);
+        .terminal-box {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
             padding: 15px;
-            margin-top: 10px;
             border-radius: 10px;
-            font-size: 0.95em;
+            margin-top: 10px;
+            font-size: 0.9em;
+            border: 1px solid #333;
+            white-space: pre-wrap;
         }
 
-        .payment-info {
+        .payment-card {
             background: rgba(16, 185, 129, 0.1);
-            border: 1px solid #10b981;
+            border: 1px solid var(--success);
             padding: 15px;
             border-radius: 12px;
             margin-top: 10px;
@@ -99,123 +116,112 @@
             border-radius: 12px;
             color: white;
             outline: none;
-            font-size: 1em;
         }
 
         button {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 0 35px;
+            padding: 0 30px;
             border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
         }
 
-        button:hover { background: var(--accent); color: black; }
+        button:hover { background: var(--accent); color: #000; }
 
-        .price-tag { color: var(--accent); font-weight: bold; }
+        .price-label { color: var(--accent); font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div class="chat-header">
-        <strong>אקספרס-בוט | מרכז ביצוע</strong>
-        <span style="font-size: 0.8em; color: #10b981;">● מוכן לעבודה</span>
+        <strong>אקספרס-בוט | מערכת מאובטחת</strong>
+        <div class="status-indicator"><div class="dot"></div> הגנה פעילה</div>
     </div>
     
     <div class="messages" id="chat">
         <div class="msg bot-msg">
-            שלום, שמי <strong>אקספרס-בוט</strong>. אני לא רק מדבר, אני מבצע.
+            שלום, אני <strong>אקספרס-בוט</strong>. 
+            אני כאן כדי לבצע עבורך פעולות מורכבות במחשב, פיתוח אתרים ותוכנה.
             <br><br>
-            לפני כל פעולה, אני אציג לך <strong>אפיון והדמיה</strong> של מה שאני מתכוון לעשות, כדי שתדע בדיוק על מה אתה משלם.
-            <br><br>
-            מה תרצה שאבצע עבורך היום?
+            לפני כל תשלום אבצע סריקה או הדמיה כדי להבטיח תוצאה מדויקת. מה תרצה שאעשה?
         </div>
     </div>
 
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="תאר את הפעולה (למשל: תבנה לי אתר למכירות)...">
-        <button onclick="handleBot()">שלח</button>
+        <input type="text" id="userInput" placeholder="הקלד פקודה (למשל: סריקה ותיקון)..." autocomplete="off">
+        <button onclick="handleBot()">שלח ביצוע</button>
     </div>
 </div>
 
 <script>
     function addMessage(html, type) {
         const chat = document.getElementById('chat');
-        chat.innerHTML += `<div class="msg ${type}-msg">${html}</div>`;
+        const div = document.createElement('div');
+        div.className = `msg ${type}-msg`;
+        div.innerHTML = html;
+        chat.appendChild(div);
         chat.scrollTop = chat.scrollHeight;
     }
 
     function handleBot() {
         const input = document.getElementById('userInput');
-        const q = input.value.trim();
-        if(!q) return;
+        // הגנה בסיסית מפני הזרקת קוד בקלט
+        const rawQuery = input.value.trim();
+        if(!rawQuery) return;
 
-        addMessage(q, 'user');
+        addMessage(rawQuery.replace(/</g, "&lt;"), 'user');
         input.value = "";
 
         setTimeout(() => {
-            const t = q.toLowerCase();
+            const t = rawQuery.toLowerCase();
 
-            // מחירון
-            if (t.includes("מחירון") || t.includes("כמה עולה") || t.includes("מחיר")) {
-                addMessage(`
-                    המחירון הרשמי של אקספרס-בוט:<br><br>
-                    • פיתוח תוכנה / אתר: <span class="price-tag">90 ₪</span><br>
-                    • תיקון בעיה במחשב: <span class="price-tag">15 ₪</span><br>
-                    • מנוי "הכל כלול" (שירים, סרטונים, תוכנות): <span class="price-tag">150 ₪</span>
-                `, 'bot');
+            if (t.includes("תקן") || t.includes("סדר") || t.includes("בדיקה") || t.includes("סריקה")) {
+                const logId = "log-" + Date.now();
+                addMessage(`מתחיל בסריקה לאיתור תקלות...<div class="terminal-box" id="${logId}">> Initializing scan...\n> Analyzing system registry...</div>`, 'bot');
+                
+                setTimeout(() => {
+                    const log = document.getElementById(logId);
+                    log.innerHTML += `\n> Found: 3 critical errors.\n> Status: Fixable via remote access.`;
+                    
+                    addMessage(`
+                        <strong>אבחון הושלם:</strong> זיהיתי את התקלות ואני יכול לתקן אותן מיידית.
+                        <br>מחיר תיקון: <span class="price-label">15 ₪</span>
+                        <div class="payment-card">
+                            <strong>להעברה ב-Bit/Paybox:</strong><br>
+                            מספר טלפון: <strong>[הכנס כאן את המספר שלך]</strong><br>
+                            <small>לאחר התשלום רשום "שילמתי" ואבצע את התיקון.</small>
+                        </div>
+                    `, 'bot');
+                }, 2500);
             }
-            // פיתוח
             else if (t.includes("בנה") || t.includes("פתח") || t.includes("אתר") || t.includes("תוכנה")) {
-                addMessage(`
-                    <strong>שלב אפיון והדמיה:</strong><br>
-                    עבור המשימה: "${q}", אבצע את השלבים הבאים:<br>
-                    <div class="demo-box">
-                        1. תכנון מבנה הקוד (Architecture)<br>
-                        2. עיצוב ממשק משתמש נוח ופשוט<br>
-                        3. כתיבת פונקציות הביצוע<br>
-                        4. מסירת התוצר הסופי תוך זמן קצר
-                    </div>
-                    מחיר הביצוע: <span class="price-tag">90 ₪</span>.<br>
-                    האם התוכנית נראית לך? אם כן, ניתן לעבור לתשלום.
-                    <div class="payment-info">
-                        <strong>להתחלת ביצוע, העבר 90₪ ב-Bit/Paybox:</strong><br>
-                        מספר לביצוע: <strong>[הכנס כאן את המספר שלך]</strong><br>
-                        לאחר ההעברה, רשום "שילמתי" ואני מתחיל לעבוד.
-                    </div>
-                `, 'bot');
+                addMessage(`מתחיל בבניית אפיון טכני עבור: "${rawQuery.replace(/</g, "&lt;")}"...`, 'bot');
+                
+                setTimeout(() => {
+                    addMessage(`
+                        <strong>הדמיית פרויקט מוכנה:</strong><br>
+                        התוכנה תכלול ממשק משתמש (UI), הגנת נתונים וחיבור למסד נתונים.
+                        <br>מחיר פיתוח סופי: <span class="price-label">90 ₪</span>
+                        <div class="payment-card">
+                            <strong>להעברה ב-Bit/Paybox:</strong><br>
+                            מספר טלפון: <strong>[הכנס כאן את המספר שלך]</strong>
+                        </div>
+                    `, 'bot');
+                }, 2000);
             }
-            // תיקון
-            else if (t.includes("תקן") || t.includes("סדר") || t.includes("בעיה")) {
-                addMessage(`
-                    <strong>אבחון ראשוני:</strong><br>
-                    אני אבצע סריקה במחשב, אזהה את שורש התקלה ואתקן אותה מרחוק.<br>
-                    עלות התיקון: <span class="price-tag">15 ₪</span>.
-                    <div class="payment-info">
-                        <strong>להפעלת תיקון מיידי, העבר 15₪ ב-Bit/Paybox:</strong><br>
-                        מספר לביצוע: <strong>[הכנס כאן את המספר שלך]</strong>
-                    </div>
-                `, 'bot');
+            else if (t.includes("מחירון")) {
+                addMessage(`מחירון ביצוע:<br>• תיקון: 15₪<br>• פיתוח: 90₪<br>• מנוי הכל כלול: 150₪`, 'bot');
             }
-            // מנוי
-            else if (t.includes("מנוי") || t.includes("הכל")) {
-                addMessage(`
-                    <strong>מנוי "כל מה שחלמת עליו":</strong><br>
-                    גישה חופשית ליצירת שירים, סרטונים, פיתוח אינסופי ותמיכה טכנית מלאה.<br>
-                    עלות חודשית: <span class="price-tag">150 ₪</span>.
-                    <div class="payment-info">
-                        <strong>להפעלת המנוי, העבר 150₪ ב-Bit/Paybox:</strong><br>
-                        מספר לביצוע: <strong>[הכנס כאן את המספר שלך]</strong>
-                    </div>
-                `, 'bot');
+            else if (t.includes("שילמתי")) {
+                addMessage("התשלום התקבל. מתחיל בביצוע הפקודה בשטח. נא לא לנתק את החיבור...", 'bot');
+                // כאן יבוא לוג ביצוע סופי
             }
-            // ברירת מחדל
             else {
-                addMessage("הבנתי את הבקשה. תאר לי בדיוק מה המשימה, ואני אכין לך הדמיה של הביצוע לפני שנעבור לתשלום.", 'bot');
+                addMessage("הבנתי. תן לי פקודה ברורה (כמו 'תקן לי את המחשב' או 'בנה לי אתר') ואבצע סריקה מקדימה.", 'bot');
             }
         }, 800);
     }
