@@ -22,6 +22,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
         .app-container {
@@ -105,9 +106,20 @@
 
         button:hover { background: var(--accent); color: black; }
 
-        .ai-status {
-            font-size: 0.8em;
+        .price-box {
+            background: rgba(0,0,0,0.4);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 10px;
+            border-right: 4px solid var(--accent);
+            line-height: 1.8;
+        }
+
+        .ai-label {
+            font-size: 0.75em;
             color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 5px;
             display: block;
         }
@@ -130,7 +142,7 @@
     </div>
 
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="שאל אותי משהו על האתר או בקש פעולה...">
+        <input type="text" id="userInput" placeholder="שאל אותי על מחירים, תוכנות או בקש הדגמה...">
         <button onclick="runBot()">שלח</button>
     </div>
 </div>
@@ -151,35 +163,43 @@
             let reply = "";
             const t = text.toLowerCase();
 
-            // מנגנון בינה מלאכותית - זיהוי כוונות (Intents)
-            if (t.includes("מחירון") || t.includes("כמה עולה") || t.includes("מחיר")) {
-                reply = "הנה המחירון שלי בשפה פשוטה:<br>• ייעוץ והסברים: חינם<br>• הדגמת יכולות: חינם<br>• פעולה בודדת (חדירה/תיקון): 150₪<br>• מנוי חודשי מלא: 400₪";
-            } 
-            else if (t.includes("הסבר") || t.includes("מה זה") || t.includes("איך זה עובד") || t.includes("מי אתה")) {
+            // מחירון מעודכן
+            if (t.includes("מחירון") || t.includes("מחיר") || t.includes("כמה עולה")) {
                 reply = `
-                    <span class="ai-status">מעבד הסבר בבינה מלאכותית...</span>
-                    אני העוזר הדיגיטלי שלך. דמיין אותי כרובוט שחוסך לך זמן: <br>
-                    1. אני מלמד את המחשב לבצע משימות במקומך (אוטומציה). <br>
-                    2. אני עוזר לך לפתור תקלות במחשבים אחרים מרחוק. <br>
-                    3. אני בונה "ספרי הוראות" חכמים למחשב כדי שיעבוד בשבילך.
+                    <span class="ai-label">שליפת נתוני מחירון מעודכנים...</span>
+                    הנה המחירון הרשמי של אקספרס-בוט:
+                    <div class="price-box">
+                        • <strong>פיתוח תוכנה / אתר אישי:</strong> 90 ₪<br>
+                        • <strong>תיקון בעיות במחשב (לכל בקשה):</strong> 15 ₪<br>
+                        • <strong>מנוי "כל מה שחלמת עליו":</strong> 150 ₪<br>
+                        <small>(המנוי כולל יצירת סרטונים, שירים, תוכנות, אתרים והכל כולל הכל!)</small>
+                    </div>
+                `;
+            } 
+            // הסברים בשפה פשוטה
+            else if (t.includes("הסבר") || t.includes("מה זה") || t.includes("איך זה עובד")) {
+                reply = `
+                    <span class="ai-label">ניתוח בבינה מלאכותית...</span>
+                    בקיצור ולעניין: אקספרס-בוט הוא העוזר האישי שלך לכל מה שטכנולוגי. <br><br>
+                    אני יכול לבנות לך אתר או תוכנה מאפס, לסדר תקלות מעצבנות במחשב שלך מרחוק, ואפילו ליצור בשבילך שירים וסרטונים בגרסת המנוי המלאה. הכל קורה מהר, פשוט ובשפה שכולם מבינים.
                 `;
             }
+            // הדגמה
             else if (t.includes("הדגמה") || t.includes("תראה לי")) {
-                reply = "<span class='ai-status'>מפעיל סימולציה חכמה...</span> מזהה שרת מטרה... מתחבר... עוקף הגנות... הצלחתי! כך זה נראה כשאני מבצע פעולה עבורך.";
+                reply = "<span class='ai-label'>מפעיל מצב הדמיה...</span> מתחבר למערכת בדיקה... מבצע סריקת קבצים... מתקן שגיאה וירטואלית... <strong>הסתיים בהצלחה!</strong> כך אני פועל בשבילך.";
             }
-            else if (t.includes("תודה") || t.includes("שלום")) {
-                reply = "בשמחה! אני כאן לכל שאלה על השירותים שלנו.";
+            // סינון פעולות ללא מנוי
+            else if (!isSubscribed && (t.includes("תבצע") || t.includes("תחדור") || t.includes("תבנה") || t.includes("תתקן"))) {
+                reply = "אני מזהה שאתה רוצה לעבור לביצוע פעולה (כמו תיקון או פיתוח). מכיוון שאין לך מנוי פעיל, הבינה המלאכותית שלי מוגבלת כרגע למתן תשובות, הסברים וייעוץ בלבד. בחר מסלול מהמחירון כדי שנתחיל לעבוד.";
             }
-            else if (!isSubscribed && (t.includes("תבצע") || t.includes("תחדור") || t.includes("תעשה"))) {
-                reply = "אני מזהה שאתה רוצה לעבור לביצוע פעולה. מכיוון שאין מנוי, הבינה המלאכותית שלי מוגבלת כרגע רק למתן תשובות, הסברים וייעוץ על מסלולים.";
-            }
+            // ברירת מחדל
             else {
-                reply = "<span class='ai-status'>ניתוח שאלה...</span> זו שאלה מעניינת על האתר. בקצרה: אקספרס-בוט נועד להפוך פעולות מחשב מסובכות לקלות ומהירות. תרצה שאפרט על המחירון או על סוגי הפעולות שאני עושה?";
+                reply = "<span class='ai-label'>מעבד תשובה...</span> זו שאלה טובה. אקספרס-בוט כאן כדי להפוך את הטכנולוגיה לפשוטה עבורך. האם תרצה שאפרט על המחירון החדש או על היכולת שלי לבנות אתרים ותוכנות ב-90 ש\"ח?";
             }
 
             chat.innerHTML += `<div class="msg bot-msg">${reply}</div>`;
             chat.scrollTop = chat.scrollHeight;
-        }, 1200);
+        }, 1100);
     }
 </script>
 
