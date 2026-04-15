@@ -1,18 +1,227 @@
-if (t.includes("בנה") || t.includes("פתח") || t.includes("אתר") || t.includes("תוכנה")) {
-    addMessage(`
-        <strong>שלב 1: אפיון והדמיה למשימת פיתוח</strong><br>
-        המערכת תבנה עבורך קוד מותאם אישית הכולל ממשק משתמש, לוגיקה פנימית ובדיקות תקינות.<br>
-        <div class="demo-box">
-            <strong>מפרט ביצוע:</strong><br>
-            • בניית שלד (Architecture)<br>
-            • עיצוב רספונסיבי<br>
-            • בדיקת אבטחה לפני מסירה
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אקספרס-בוט | מרכז ביצוע ותשלומים</title>
+    <style>
+        :root {
+            --bg: #020617;
+            --primary: #3b82f6;
+            --accent: #22d3ee;
+            --glass: rgba(15, 23, 42, 0.95);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+            color: #f8fafc;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-container {
+            width: 95%;
+            max-width: 1000px;
+            height: 90vh;
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+        }
+
+        .chat-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .msg {
+            max-width: 85%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            line-height: 1.6;
+            font-size: 1.05em;
+        }
+
+        .bot-msg { align-self: flex-start; background: rgba(30, 41, 59, 0.8); border: 1px solid var(--primary); }
+        .user-msg { align-self: flex-end; background: var(--primary); color: white; }
+
+        .demo-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed var(--accent);
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 10px;
+            font-size: 0.95em;
+        }
+
+        .payment-info {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+
+        .input-area {
+            padding: 25px;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            font-size: 1em;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 35px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover { background: var(--accent); color: black; }
+
+        .price-tag { color: var(--accent); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="chat-header">
+        <strong>אקספרס-בוט | מרכז ביצוע</strong>
+        <span style="font-size: 0.8em; color: #10b981;">● מוכן לעבודה</span>
+    </div>
+    
+    <div class="messages" id="chat">
+        <div class="msg bot-msg">
+            שלום, שמי <strong>אקספרס-בוט</strong>. אני לא רק מדבר, אני מבצע.
+            <br><br>
+            לפני כל פעולה, אני אציג לך <strong>אפיון והדמיה</strong> של מה שאני מתכוון לעשות, כדי שתדע בדיוק על מה אתה משלם.
+            <br><br>
+            מה תרצה שאבצע עבורך היום?
         </div>
-        מחיר לביצוע: <strong>90₪</strong>.
-        <br><br>
-        <strong>איך משלמים?</strong><br>
-        יש להעביר 90₪ ב-Bit/Paybox למספר: <strong>05X-XXXXXXX</strong><br>
-        או בהעברה לבנק XX (סניף XXX, חשבון XXXXX).<br>
-        <em>לאחר ההעברה, רשום כאן "שילמתי" ואני מתחיל בביצוע.</em>
-    `, 'bot');
-}
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="תאר את הפעולה (למשל: תבנה לי אתר למכירות)...">
+        <button onclick="handleBot()">שלח</button>
+    </div>
+</div>
+
+<script>
+    function addMessage(html, type) {
+        const chat = document.getElementById('chat');
+        chat.innerHTML += `<div class="msg ${type}-msg">${html}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    function handleBot() {
+        const input = document.getElementById('userInput');
+        const q = input.value.trim();
+        if(!q) return;
+
+        addMessage(q, 'user');
+        input.value = "";
+
+        setTimeout(() => {
+            const t = q.toLowerCase();
+
+            // מחירון
+            if (t.includes("מחירון") || t.includes("כמה עולה") || t.includes("מחיר")) {
+                addMessage(`
+                    המחירון הרשמי של אקספרס-בוט:<br><br>
+                    • פיתוח תוכנה / אתר: <span class="price-tag">90 ₪</span><br>
+                    • תיקון בעיה במחשב: <span class="price-tag">15 ₪</span><br>
+                    • מנוי "הכל כלול" (שירים, סרטונים, תוכנות): <span class="price-tag">150 ₪</span>
+                `, 'bot');
+            }
+            // פיתוח
+            else if (t.includes("בנה") || t.includes("פתח") || t.includes("אתר") || t.includes("תוכנה")) {
+                addMessage(`
+                    <strong>שלב אפיון והדמיה:</strong><br>
+                    עבור המשימה: "${q}", אבצע את השלבים הבאים:<br>
+                    <div class="demo-box">
+                        1. תכנון מבנה הקוד (Architecture)<br>
+                        2. עיצוב ממשק משתמש נוח ופשוט<br>
+                        3. כתיבת פונקציות הביצוע<br>
+                        4. מסירת התוצר הסופי תוך זמן קצר
+                    </div>
+                    מחיר הביצוע: <span class="price-tag">90 ₪</span>.<br>
+                    האם התוכנית נראית לך? אם כן, ניתן לעבור לתשלום.
+                    <div class="payment-info">
+                        <strong>להתחלת ביצוע, העבר 90₪ ב-Bit/Paybox:</strong><br>
+                        מספר לביצוע: <strong>[הכנס כאן את המספר שלך]</strong><br>
+                        לאחר ההעברה, רשום "שילמתי" ואני מתחיל לעבוד.
+                    </div>
+                `, 'bot');
+            }
+            // תיקון
+            else if (t.includes("תקן") || t.includes("סדר") || t.includes("בעיה")) {
+                addMessage(`
+                    <strong>אבחון ראשוני:</strong><br>
+                    אני אבצע סריקה במחשב, אזהה את שורש התקלה ואתקן אותה מרחוק.<br>
+                    עלות התיקון: <span class="price-tag">15 ₪</span>.
+                    <div class="payment-info">
+                        <strong>להפעלת תיקון מיידי, העבר 15₪ ב-Bit/Paybox:</strong><br>
+                        מספר לביצוע: <strong>[הכנס כאן את המספר שלך]</strong>
+                    </div>
+                `, 'bot');
+            }
+            // מנוי
+            else if (t.includes("מנוי") || t.includes("הכל")) {
+                addMessage(`
+                    <strong>מנוי "כל מה שחלמת עליו":</strong><br>
+                    גישה חופשית ליצירת שירים, סרטונים, פיתוח אינסופי ותמיכה טכנית מלאה.<br>
+                    עלות חודשית: <span class="price-tag">150 ₪</span>.
+                    <div class="payment-info">
+                        <strong>להפעלת המנוי, העבר 150₪ ב-Bit/Paybox:</strong><br>
+                        מספר לביצוע: <strong>[הכנס כאן את המספר שלך]</strong>
+                    </div>
+                `, 'bot');
+            }
+            // ברירת מחדל
+            else {
+                addMessage("הבנתי את הבקשה. תאר לי בדיוק מה המשימה, ואני אכין לך הדמיה של הביצוע לפני שנעבור לתשלום.", 'bot');
+            }
+        }, 800);
+    }
+
+    document.getElementById('userInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleBot(); });
+</script>
+
+</body>
+</html>
