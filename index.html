@@ -2,24 +2,77 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>ExpertBot - פתרונות תוכנה חכמים</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מומחה בוט - פתרונות טכנולוגיים מתקדמים</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; text-align: center; padding: 50px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; }
-        p { font-size: 1.2em; line-height: 1.6; }
-        .button { display: inline-block; padding: 15px 30px; background-color: #27ae60; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; }
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #27ae60;
+            --bg-color: #f8f9fa;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg-color); 
+            color: #333; 
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 700px; 
+            width: 90%;
+            background: white; 
+            padding: 40px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--accent-color);
+        }
+        h1 { color: var(--primary-color); font-size: 2.5em; margin-bottom: 20px; }
+        .feature-box {
+            background: #e8f5e9;
+            padding: 20px;
+            border-right: 5px solid var(--accent-color);
+            margin: 25px 0;
+            text-align: right;
+        }
+        p { font-size: 1.1em; line-height: 1.8; }
+        .highlight { color: var(--accent-color); font-weight: bold; }
+        .button { 
+            display: inline-block; 
+            padding: 18px 40px; 
+            background-color: var(--accent-color); 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 1.2em;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+        .button:hover { background-color: #219150; transform: translateY(-2px); }
+        .footer-note { font-size: 0.9em; color: #7f8c8d; margin-top: 30px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>ברוכים הבאים ל-ExpertBot</h1>
-        <p>המהפכה שלכם בעולם התוכנה מתחילה כאן. אני בונה עבורכם פתרונות טכנולוגיים מתקדמים, אתרים ותוכנות מותאמות אישית – במהירות ובדיוק מקסימלי.</p>
-        <p><strong>למה לבחור בנו?</strong><br>
-        ✓ חיסכון של אלפי שקלים בעלויות פיתוח<br>
-        ✓ ליווי אישי לכל פרויקט<br>
-        ✓ שקיפות מלאה ובטיחות מקסימלית</p>
-        <a href="#" class="button">צרו קשר לתחילת עבודה</a>
+        <h1>מומחה בוט</h1>
+        <p>למה לבזבז זמן וכסף על טכנאי כשאפשר לקבל פתרון חכם, מהיר ובטוח מרחוק?</p>
+        
+        <div class="feature-box">
+            <strong>השירות הבלעדי שלנו:</strong><br>
+            במקום להסביר לכם מה לעשות, המערכת שלנו מתחברת למחשב שלכם ופותרת את התקלה בעצמה. 
+            <br><span class="highlight">הכל בשקיפות מלאה: שום פעולה לא תתבצע ללא אישור מפורש מכם מראש!</span>
+        </div>
+
+        <p>✓ פיתוח תוכנה ואתרים בהתאמה אישית<br>
+        ✓ תמיכה טכנית אוטומטית ללא צורך בידע מקדים<br>
+        ✓ אבטחת מידע ברמה הגבוהה ביותר</p>
+
+        <a href="#" class="button">התחילו עכשיו בחינם</a>
+        
+        <p class="footer-note">מערכת בינה מלאכותית בשירות הלקוח</p>
     </div>
 </body>
 </html>
