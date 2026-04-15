@@ -3,69 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אקספרט-בוט | פתרונות תוכנה חכמים</title>
+    <title>אקספרס-בוט | פתרונות תוכנה חכמים</title>
     <style>
         :root {
-            --primary-color: #1a2a6c;
-            --accent-color: #27ae60;
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --primary: #0f172a;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --text: #f8fafc;
         }
         body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            background: var(--bg-gradient); 
+            font-family: 'Assistant', 'Segoe UI', sans-serif; 
+            background: radial-gradient(circle at top right, #1e293b, #0f172a); 
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            color: var(--text);
         }
-        .card { 
-            max-width: 650px; 
-            background: white; 
-            padding: 50px; 
-            border-radius: 20px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        .container { 
+            max-width: 800px; 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(10px);
+            padding: 60px; 
+            border-radius: 30px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
             text-align: center;
+            animation: fadeIn 1s ease-out;
         }
-        h1 { color: var(--primary-color); font-size: 3em; margin-bottom: 10px; }
-        .subtitle { color: var(--accent-color); font-size: 1.5em; font-weight: bold; margin-bottom: 30px; }
-        .description { font-size: 1.2em; line-height: 1.6; color: #444; margin-bottom: 30px; }
-        .feature {
-            background: #f0f4f8;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            font-weight: 500;
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        h1 { 
+            font-size: 4em; 
+            margin: 0; 
+            background: linear-gradient(to left, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
         }
-        .btn { 
+        .tagline { font-size: 1.8em; color: #94a3b8; margin-bottom: 40px; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .feature-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+        .feature-box:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--secondary);
+        }
+        .feature-box strong { display: block; color: var(--accent); margin-bottom: 5px; }
+
+        .cta-button { 
             display: inline-block; 
-            padding: 15px 35px; 
-            background: var(--accent-color); 
+            padding: 18px 45px; 
+            background: var(--secondary); 
             color: white; 
             text-decoration: none; 
-            border-radius: 30px; 
+            border-radius: 50px; 
             font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
             transition: 0.3s;
         }
-        .btn:hover { background: #219150; transform: scale(1.05); }
+        .cta-button:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
+            background: #2563eb;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>אקספרט-בוט</h1>
-        <div class="subtitle">פתרונות תוכנה חכמים</div>
+    <div class="container">
+        <h1>אקספרס-בוט</h1>
+        <div class="tagline">הדור הבא של פתרונות התוכנה החכמים</div>
         
-        <p class="description">
-            למה לבקש מתכנאי לפתור לכם בעיות אם אני נכנס לכם למחשב ופותר את הבעיות לבד? 
-            אנחנו משנים את הדרך שבה אתם מקבלים שירות טכני - בביטחון מלא ובאישורכם מראש לפני כל פעולה.
-        </p>
+        <div class="grid">
+            <div class="feature-box">
+                <strong>אוטומציה מלאה</strong>
+                פתרון תקלות ללא מגע יד אדם
+            </div>
+            <div class="feature-box">
+                <strong>אבטחה מתקדמת</strong>
+                שליטה מלאה בידיים שלכם
+            </div>
+            <div class="feature-box">
+                <strong>תמיכה מהירה</strong>
+                זמן תגובה של שניות בודדות
+            </div>
+            <div class="feature-box">
+                <strong>פיתוח מותאם</strong>
+                מערכות בינה מלאכותית אישיות
+            </div>
+        </div>
 
-        <div class="feature">✓ פתרון תקלות מרחוק באופן אוטומטי</div>
-        <div class="feature">✓ אישור מראש לפני כל פעולה במחשב</div>
-        <div class="feature">✓ אבטחה מקסימלית ושקיפות מלאה</div>
-
-        <br>
-        <a href="#" class="btn">צרו קשר לפרטים נוספים</a>
+        <a href="#" class="cta-button">התחילו עכשיו</a>
     </div>
 </body>
 </html>
