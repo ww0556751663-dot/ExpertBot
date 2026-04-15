@@ -3,81 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אקספרס-בוט | פתרונות תוכנה חכמים</title>
+    <title>אקספרס-בוט | הכוח לבצע הכל</title>
     <style>
         :root {
-            --primary: #0f172a;
-            --secondary: #3b82f6;
+            --bg: #020617;
+            --primary: #3b82f6;
             --accent: #10b981;
-            --text: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.03);
         }
-        body { 
-            font-family: 'Assistant', 'Segoe UI', sans-serif; 
-            background: radial-gradient(circle at top right, #1e293b, #0f172a); 
+
+        body {
+            font-family: 'Assistant', sans-serif;
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+            color: #f8fafc;
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            color: var(--text);
-        }
-        .container { 
-            max-width: 800px; 
-            background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(10px);
-            padding: 60px; 
-            border-radius: 30px; 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
             text-align: center;
-            animation: fadeIn 1s ease-out;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        h1 { 
-            font-size: 4em; 
-            margin: 0; 
+
+        .container {
+            max-width: 900px;
+            width: 92%;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            padding: 70px 40px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 4.5em;
+            margin-bottom: 10px;
             background: linear-gradient(to left, #60a5fa, #34d399);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
         }
-        .tagline { font-size: 1.8em; color: #94a3b8; margin-bottom: 40px; }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+
+        .main-tagline {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 25px;
+        }
+
+        .description {
+            font-size: 1.3em;
+            color: #94a3b8;
+            line-height: 1.7;
             margin-bottom: 40px;
         }
-        .feature-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 15px;
-            transition: 0.3s;
-            border: 1px solid transparent;
-        }
-        .feature-box:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--secondary);
-        }
-        .feature-box strong { display: block; color: var(--accent); margin-bottom: 5px; }
 
-        .cta-button { 
-            display: inline-block; 
-            padding: 18px 45px; 
-            background: var(--secondary); 
-            color: white; 
-            text-decoration: none; 
-            border-radius: 50px; 
+        .server-status {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 15px 25px;
+            border-radius: 100px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 40px;
+            border: 1px solid var(--accent);
+        }
+
+        .cta {
+            background: var(--primary);
+            color: white;
+            padding: 20px 50px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-size: 1.4em;
             font-weight: bold;
-            font-size: 1.2em;
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
             transition: 0.3s;
         }
-        .cta-button:hover { 
-            transform: scale(1.05); 
-            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
+
+        .cta:hover {
+            transform: scale(1.05);
             background: #2563eb;
         }
     </style>
@@ -85,28 +89,19 @@
 <body>
     <div class="container">
         <h1>אקספרס-בוט</h1>
-        <div class="tagline">הדור הבא של פתרונות התוכנה החכמים</div>
+        <div class="main-tagline">האתר שיבצע לך את כל הפעולות שאתה רק חולם עליהם</div>
         
-        <div class="grid">
-            <div class="feature-box">
-                <strong>אוטומציה מלאה</strong>
-                פתרון תקלות ללא מגע יד אדם
-            </div>
-            <div class="feature-box">
-                <strong>אבטחה מתקדמת</strong>
-                שליטה מלאה בידיים שלכם
-            </div>
-            <div class="feature-box">
-                <strong>תמיכה מהירה</strong>
-                זמן תגובה של שניות בודדות
-            </div>
-            <div class="feature-box">
-                <strong>פיתוח מותאם</strong>
-                מערכות בינה מלאכותית אישיות
-            </div>
+        <p class="description">
+            נתקלתם בבעיה מורכבת? משהו שלא חשבנו עליו? אל דאגה. 
+            בכל רגע שבו תתבקש פעולה חדשה, הרובוט שלנו יתחבר מעצמו לכל השרתים הרלוונטיים ויבצע את העבודה עבורכם – בשיא המהירות ובאישורכם המלא.
+        </p>
+
+        <div class="server-status">
+            ● מערכת חיבור לשרתים גלובליים פעילה
         </div>
 
-        <a href="#" class="cta-button">התחילו עכשיו</a>
+        <br><br>
+        <a href="#" class="cta">בואו נגשים חלום</a>
     </div>
 </body>
 </html>
