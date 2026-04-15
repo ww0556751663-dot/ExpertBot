@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מרכז בקרה - אקספרס-בוט</title>
+    <style>
+        :root {
+            --bg: #020617;
+            --primary: #3b82f6;
+            --accent: #22d3ee;
+            --glass: rgba(15, 23, 42, 0.9);
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+            color: #f8fafc;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 95%;
+            max-width: 900px;
+            height: 85vh;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+        }
+
+        .chat-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .msg {
+            max-width: 80%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            line-height: 1.5;
+            font-size: 1.05em;
+        }
+
+        .bot-msg {
+            align-self: flex-start;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--primary);
+        }
+
+        .user-msg {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+        }
+
+        .input-area {
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            outline: none;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover { background: var(--accent); color: black; }
+
+        .pricing-list {
+            margin-top: 10px;
+            border-right: 3px solid var(--accent);
+            padding-right: 15px;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <strong>אקספרס-בוט: מרכז בקרה וביצוע</strong>
+        <span style="color: var(--accent); font-size: 0.8em;">● מערכת מחוברת</span>
+    </div>
+    
+    <div class="messages" id="chat">
+        <div class="msg bot-msg">
+            שלום! אני הבוט המקצוען של אקספרס-בוט. 
+            <br><br>
+            אני כאן כדי לספק <strong>הסבר על האתר</strong>, להציג <strong>מחירון מלא</strong>, לתת <strong>הדגמה בחינם</strong> או לייעץ על מסלול מתאים. 
+            <br><br>
+            <em>שימו לב: פעולות חדירה, פיתוח וביצוע משימות מורכבות פתוחות למנויים בלבד.</em>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="איך אוכל לעזור לך היום?">
+        <button onclick="runBot()">שלח</button>
+    </div>
+</div>
+
+<script>
+    const isSubscribed = false; // מצב מנוי (לשנות ל-true במידה ורכשו)
+
+    function runBot() {
+        const input = document.getElementById('userInput');
+        const chat = document.getElementById('chat');
+        const text = input.value.trim();
+        if(!text) return;
+
+        chat.innerHTML += `<div class="msg user-msg">${text}</div>`;
+        input.value = "";
+
+        setTimeout(() => {
+            let reply = "";
+
+            if (text.includes("מחירון") || text.includes("כמה עולה")) {
+                reply = `הנה המחירון של הפעולות באתר:<br>
+                <div class="pricing-list">
+                • הסבר וייעוץ טכני: חינם<br>
+                • הדגמת יכולות חדירה: חינם<br>
+                • מנוי חודשי לביצוע פעולות חופשי: 350₪<br>
+                • פעולה בודדת (חדירה/תיקון): 120₪<br>
+                • פיתוח תוכנה מותאם אישית: החל מ-500₪
+                </div>`;
+            } 
+            else if (text.includes("הסבר") || text.includes("מה האתר")) {
+                reply = "אקספרס-בוט היא פלטפורמה המאפשרת ביצוע פעולות אוטומטיות מורכבות במחשבים ובשרתים. אני הבוט המנהל את הממשק ומבצע את הפקודות שלך בשטח.";
+            }
+            else if (text.includes("הדגמה")) {
+                reply = "מפעיל הדגמה בחינם... <br> [STATUS]: מזהה מערכת יעד... <br> [ACTION]: עוקף הגנות בדיקה... <br> <strong>הצלחה:</strong> הצלחתי לחדור למערכת הסימולציה. בגרסת המנוי אוכל לבצע זאת על כל מטרה שתגדיר.";
+            }
+            else if (!isSubscribed && (text.includes("תבצע") || text.includes("תחדור") || text.includes("תפרוץ"))) {
+                reply = "זיהיתי בקשת ביצוע פעולה. מכיוון שאין לך מנוי פעיל, אני רשאי לעזור רק בנושאים טכניים, ייעוץ והסברים. אנא בחר מסלול מהמחירון כדי להמשיך.";
+            }
+            else {
+                reply = "אני מבין. האם תרצה שאסביר יותר על האתר, אציג את המחירון או אתן לך הדגמה של היכולות שלי?";
+            }
+
+            chat.innerHTML += `<div class="msg bot-msg">${reply}</div>`;
+            chat.scrollTop = chat.scrollHeight;
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>
